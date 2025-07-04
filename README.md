@@ -21,7 +21,7 @@ The `npm run prod:up` command will:
 - Launch the Angular frontend on port 4200
 - Automatically create and schedule a set of test service-calls for each tenant, with execution times randomly distributed within the next 10 minutes
 
-**Note:** The worker will immediately start sending requests as soon as it starts. All outgoing requests are mocked (except for those to https://jsonplaceholder.typicode.com/posts, which are real; all other URLs return fake data).
+**Note:** The worker will immediately start sending requests as soon as it starts. All outgoing requests are mocked (except for those to https://jsonplaceholder.typicode.com, which are real; all other URLs return fake data).
 
 Once everything is running, you can access:
 - **Frontend**: http://localhost:4200
@@ -39,7 +39,7 @@ The following users are automatically created when you run `npm run prod:up`:
 |--------------|--------------|---------------|
 | alpha_user   | password123  | Tenant Alpha  |
 | beta_user    | password123  | Tenant Beta   |
-| admin_user   | password123  | Tenant Alpha  |
+| admin_user   | password123  | Tenant Alpha, Tenant Beta  |
 
 You can use these credentials to log in to the application.
 
@@ -72,7 +72,7 @@ With this setup I have isolated logic for request handling and API-requests. Thi
 
 ### API Requests
 
-- Real requests go to https://jsonplaceholder.typicode.com/posts
+- Real requests go to https://jsonplaceholder.typicode.com
 - All other URLs are mocked (return fake data)
 - Service calls marked as "Execute immediately" will use current time. And worker has the logic that all requests scheduled in the past will be executed.
 
