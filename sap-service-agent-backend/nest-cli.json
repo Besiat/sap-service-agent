@@ -4,5 +4,20 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true
-  }
+  },
+  "projects": {
+    "service-calls-agent-api": {
+      "type": "application",
+      "root": "src/apps/service-calls-agent-api",
+      "entryFile": "main",
+      "sourceRoot": "src/apps/service-calls-agent-api"
+    },
+    "requests-agent-worker": {
+      "type": "application",
+      "root": "src/apps/requests-agent-worker",
+      "entryFile": "main",
+      "sourceRoot": "src/apps/requests-agent-worker"
+    }
+  },
+  "defaultProject": "service-calls-agent-api"
 }

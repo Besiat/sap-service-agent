@@ -16,6 +16,14 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@sap-service-agent/service-calls/*": ["src/libs/service-calls/*"],
+      "@sap-service-agent/service-calls": ["src/libs/service-calls"],
+      "@sap-service-agent/shared/*": ["src/libs/shared/*"],
+      "@sap-service-agent/shared": ["src/libs/shared"],
+      "@sap-service-agent/auth/*": ["src/libs/auth/*"],
+      "@sap-service-agent/auth": ["src/libs/auth"]
+    }
   }
 }

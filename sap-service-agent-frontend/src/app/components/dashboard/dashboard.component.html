@@ -1,0 +1,41 @@
+<mat-toolbar color="primary" class="dashboard-toolbar">
+  <span>SAP Service Agent</span>
+
+  <div class="dashboard-user-info">
+    @if (authService.currentUser(); as user) {
+    <span>Welcome, {{ user.username }}</span>
+
+    @if (authService.selectedTenant(); as tenant) {
+    <mat-menu #tenantMenu="matMenu">
+      @for (userTenant of userTenants(); track userTenant.id) {
+      <button
+        mat-menu-item
+        (click)="switchTenant(userTenant)"
+        [class.active]="userTenant.id === tenant.id"
+      >
+        <mat-icon>business</mat-icon>
+        <span>{{ userTenant.name }}</span>
+        @if (userTenant.id === tenant.id) {
+        <mat-icon>check</mat-icon>
+        }
+      </button>
+      }
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="tenantMenu">
+      <mat-icon>business</mat-icon>
+      <span>{{ tenant.name }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    }
+
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+    }
+  </div>
+</mat-toolbar>
+
+
+<app-service-calls-table></app-service-calls-table>
+

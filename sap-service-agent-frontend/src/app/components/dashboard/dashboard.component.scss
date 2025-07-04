@@ -1,0 +1,13 @@
+.dashboard-toolbar {
+  justify-content: space-between;
+}
+
+.dashboard-user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.active {
+  background-color: rgba(0,0,0,0.04);
+}

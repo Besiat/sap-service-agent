@@ -1,0 +1,141 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: sap-service-agent-db-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sap_service_agent_auth
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - sap-service-agent-network
+
+  tenant-db-setup:
+    build:
+      context: ./scripts
+      dockerfile: Dockerfile
+    container_name: sap-service-agent-tenant-db-setup-dev
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      TENANT_IDS: 550e8400-e29b-41d4-a716-446655440000,550e8400-e29b-41d4-a716-446655440001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - sap-service-agent-network
+
+  backend:
+    build:
+      context: ./sap-service-agent-backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: sap-service-agent-backend-dev
+    volumes:
+      - ./sap-service-agent-backend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: sap_service_agent_auth
+      JWT_SECRET: dev-jwt-secret-key
+      JWT_EXPIRES_IN: 24h
+      TENANT_IDS: 550e8400-e29b-41d4-a716-446655440000,550e8400-e29b-41d4-a716-446655440001
+    command: ["sh", "-c", "yarn migration:run:all && yarn start:dev"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      tenant-db-setup:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/auth/tenants"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - sap-service-agent-network
+
+  worker:
+    build:
+      context: ./sap-service-agent-backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: sap-service-agent-worker-dev
+    volumes:
+      - ./sap-service-agent-backend:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: sap_service_agent_auth
+      WORKER_INTERVAL_SECONDS: 10
+      TENANT_DATABASES: 550e8400-e29b-41d4-a716-446655440000:tenant_alpha_db,550e8400-e29b-41d4-a716-446655440001:tenant_beta_db
+    command: ["sh", "-c", "yarn build && yarn start:worker:dev"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      tenant-db-setup:
+        condition: service_completed_successfully
+    networks:
+      - sap-service-agent-network
+
+  frontend:
+    build:
+      context: ./sap-service-agent-frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: sap-service-agent-frontend-dev
+    volumes:
+      - ./sap-service-agent-frontend:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - backend
+    networks:
+      - sap-service-agent-network
+
+  data-seeder:
+    build:
+      context: ./data-seeder
+      dockerfile: Dockerfile
+    container_name: sap-service-agent-data-seeder-dev
+    environment:
+      BACKEND_URL: http://backend:3000
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - sap-service-agent-network
+    profiles:
+      - seed
+
+networks:
+  sap-service-agent-network:
+    driver: bridge
+
+volumes:
+  postgres_data_dev:

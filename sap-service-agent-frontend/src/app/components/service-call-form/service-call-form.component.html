@@ -1,0 +1,126 @@
+<div class="form-container">
+  <h2>{{ isEditMode() ? 'Edit Service Call' : 'New Service Call' }}</h2>
+  
+  <div *ngIf="isServiceCallExecuted()" class="executed-notice">
+    <mat-icon>info</mat-icon>
+    <span>This service call has been executed and cannot be modified.</span>
+  </div>
+  
+  <form [formGroup]="serviceCallForm" (ngSubmit)="onSubmit()" class="service-form">
+    
+    <div class="form-group">
+      <label>Job Name</label>
+      <input matInput formControlName="name" placeholder="Enter job name">
+      <div class="error" *ngIf="getFieldError('name')">{{ getFieldError('name') }}</div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Method</label>
+        <select matNativeControl formControlName="method">
+          <option *ngFor="let method of httpMethods" [value]="method">{{ method }}</option>
+        </select>
+      </div>
+      
+      <div class="form-group flex-grow">
+        <label>URL</label>
+        <input matInput formControlName="url" placeholder="https://api.example.com/endpoint">
+        <div class="error" *ngIf="getFieldError('url')">{{ getFieldError('url') }}</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="section-header">
+        <label>Headers</label>
+        <button type="button" 
+                mat-button 
+                (click)="addHeader()"
+                [disabled]="isServiceCallExecuted()">
+          Add Header
+        </button>
+      </div>
+      
+      <div formArrayName="headers" class="headers-list">
+        <div *ngFor="let header of headersArray.controls; let i = index" 
+             [formGroupName]="i" 
+             class="header-row">
+          <input matInput formControlName="key" placeholder="Header key">
+          <input matInput formControlName="value" placeholder="Header value">
+          <button type="button" 
+                  mat-icon-button 
+                  (click)="removeHeader(i)"
+                  [disabled]="isServiceCallExecuted()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Request Body (JSON)</label>
+      <textarea 
+        matInput 
+        formControlName="body"
+        placeholder="Enter JSON body..."
+        rows="6">
+      </textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Execution</label>
+      <mat-radio-group formControlName="executionType">
+        <mat-radio-button value="now">Execute Now</mat-radio-button>
+        <mat-radio-button value="schedule">Schedule Later</mat-radio-button>
+      </mat-radio-group>
+      
+      <div *ngIf="serviceCallForm.get('executionType')?.value === 'schedule'" class="schedule-input">
+        <input matInput 
+               type="datetime-local"
+               formControlName="scheduledAt"
+               placeholder="Choose date and time">
+        
+        <div *ngIf="isScheduledInPast()" class="warning-message">
+          <mat-icon>warning</mat-icon>
+          <span>The selected date is in the past. The request will be executed immediately.</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isEditMode() && serviceCall()?.responseDetails" class="response-section">
+      <h3>Response</h3>
+      <p>Status: {{ serviceCall()?.responseDetails?.status }} {{ serviceCall()?.responseDetails?.statusText }}</p>
+      
+      <div class="tabs">
+        <button type="button" class="tab" [class.active]="activeTab === 'body'" (click)="activeTab = 'body'">
+          Response Body
+        </button>
+        <button type="button" class="tab" [class.active]="activeTab === 'headers'" (click)="activeTab = 'headers'">
+          Headers
+        </button>
+      </div>
+      
+      <div class="tab-content">
+        <textarea *ngIf="activeTab === 'body'"
+                  readonly
+                  [value]="formatResponseBody(serviceCall()?.responseDetails?.body)"
+                  rows="10">
+        </textarea>
+        
+        <pre *ngIf="activeTab === 'headers'">{{ formatResponseHeaders(serviceCall()?.responseDetails?.headers) }}</pre>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" mat-button (click)="onCancel()" [disabled]="loading()">
+        {{ isServiceCallExecuted() ? 'Back' : 'Cancel' }}
+      </button>
+      <button type="submit" 
+              mat-raised-button 
+              color="primary"
+              [disabled]="loading() || serviceCallForm.invalid || isServiceCallExecuted()"
+              *ngIf="!isServiceCallExecuted()">
+        {{ loading() ? 'Saving...' : (isEditMode() ? 'Update' : 'Create') }}
+      </button>
+    </div>
+  </form>
+</div>

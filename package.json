@@ -1,0 +1,26 @@
+{
+  "name": "sap-service-agent",
+  "version": "1.0.0",
+  "description": "SAP Service Agent - Full Stack Application",
+  "private": true,
+  "workspaces": [
+  ],
+  "scripts": {
+    "dev": "docker compose -f docker-compose.dev.yml up --build -d",
+    "dev:seed": "docker compose -f docker-compose.dev.yml --profile seed up --build -d",
+    "dev:logs:backend-api": "docker compose -f docker-compose.dev.yml logs -f backend",
+    "dev:logs:worker": "docker compose -f docker-compose.dev.yml logs -f worker",
+    "dev:logs:frontend": "docker compose -f docker-compose.dev.yml logs -f frontend",
+    "dev:down": "docker compose -f docker-compose.dev.yml down",
+    "prod:up": "docker compose up --build -d",
+    "prod:down": "docker compose down",
+    "prod:logs": "docker compose logs -f"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}

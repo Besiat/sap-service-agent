@@ -1,0 +1,5 @@
+[
+  { "username": "alpha_user", "password": "password123", "tenantName": "Tenant Alpha" },
+  { "username": "beta_user", "password": "password123", "tenantName": "Tenant Beta" },
+  { "username": "admin_user", "password": "password123", "tenantName": "Tenant Alpha" }
+]

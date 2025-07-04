@@ -1,0 +1,215 @@
+[
+  {
+    "name": "Get Customer Data",
+    "requestDetails": {
+      "url": "https://api.example.com/customers",
+      "method": "GET",
+      "headers": { "Authorization": "Bearer token123" }
+    }
+  },
+  {
+    "name": "Create New Customer",
+    "requestDetails": {
+      "url": "https://api.example.com/customers",
+      "method": "POST",
+      "headers": { "Authorization": "Bearer token123", "Content-Type": "application/json" },
+      "body": { "name": "John Doe", "email": "john@example.com" }
+    }
+  },
+  {
+    "name": "Update User Profile",
+    "requestDetails": {
+      "url": "https://api.example.com/users/profile",
+      "method": "PATCH",
+      "headers": { "Authorization": "Bearer token123", "Content-Type": "application/json" },
+      "body": { "firstName": "Jane", "lastName": "Smith", "preferences": { "theme": "dark", "language": "en" } }
+    }
+  },
+  {
+    "name": "Search Orders",
+    "requestDetails": {
+      "url": "https://api.example.com/orders",
+      "method": "GET",
+      "headers": { "Authorization": "Bearer token123", "Accept": "application/json" },
+      "params": { "status": "pending", "limit": 50, "sortBy": "createdAt" }
+    }
+  },
+  {
+    "name": "Delete Product",
+    "requestDetails": {
+      "url": "https://api.example.com/products/456",
+      "method": "DELETE",
+      "headers": { "Authorization": "Bearer token123" }
+    }
+  },
+  {
+    "name": "Get JSONPlaceholder Posts",
+    "requestDetails": {
+      "url": "https://jsonplaceholder.typicode.com/posts",
+      "method": "GET",
+      "headers": { "Accept": "application/json" }
+    }
+  },
+  {
+    "name": "Create JSONPlaceholder Post",
+    "requestDetails": {
+      "url": "https://jsonplaceholder.typicode.com/posts",
+      "method": "POST",
+      "headers": { "Content-Type": "application/json" },
+      "body": {
+        "title": "My Test Post",
+        "body": "This is a test post created via SAP Service Agent",
+        "userId": 1
+      }
+    }
+  },
+  {
+    "name": "Update JSONPlaceholder Post",
+    "requestDetails": {
+      "url": "https://jsonplaceholder.typicode.com/posts/1",
+      "method": "PUT",
+      "headers": { "Content-Type": "application/json" },
+      "body": {
+        "id": 1,
+        "title": "Updated Post Title",
+        "body": "This post has been updated",
+        "userId": 1
+      }
+    }
+  },
+  {
+    "name": "Get JSONPlaceholder Users",
+    "requestDetails": {
+      "url": "https://jsonplaceholder.typicode.com/users",
+      "method": "GET",
+      "headers": { "Accept": "application/json" }
+    }
+  },
+  {
+    "name": "Get JSONPlaceholder Todos",
+    "requestDetails": {
+      "url": "https://jsonplaceholder.typicode.com/todos",
+      "method": "GET",
+      "headers": { "Accept": "application/json" },
+      "params": { "userId": "1", "completed": "false" }
+    }
+  },
+  {
+    "name": "Create JSONPlaceholder Todo",
+    "requestDetails": {
+      "url": "https://jsonplaceholder.typicode.com/todos",
+      "method": "POST",
+      "headers": { "Content-Type": "application/json" },
+      "body": {
+        "userId": 1,
+        "title": "Test Todo from SAP Service Agent",
+        "completed": false
+      }
+    }
+  },
+  {
+    "name": "Get Weather Data",
+    "requestDetails": {
+      "url": "https://api.openweathermap.org/data/2.5/weather",
+      "method": "GET",
+      "headers": { "Accept": "application/json" },
+      "params": { "q": "London", "appid": "your_api_key_here", "units": "metric" }
+    }
+  },
+  {
+    "name": "Send Slack Notification",
+    "requestDetails": {
+      "url": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
+      "method": "POST",
+      "headers": { "Content-Type": "application/json" },
+      "body": {
+        "text": "Service call completed successfully",
+        "channel": "#alerts",
+        "username": "SAP Service Agent"
+      }
+    }
+  },
+  {
+    "name": "GitHub API - Get Repository",
+    "requestDetails": {
+      "url": "https://api.github.com/repos/octocat/Hello-World",
+      "method": "GET",
+      "headers": { "Accept": "application/vnd.github.v3+json", "User-Agent": "SAP-Service-Agent" }
+    }
+  },
+  {
+    "name": "Send Email via SendGrid",
+    "requestDetails": {
+      "url": "https://api.sendgrid.com/v3/mail/send",
+      "method": "POST",
+      "headers": { 
+        "Authorization": "Bearer YOUR_SENDGRID_API_KEY",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "personalizations": [
+          {
+            "to": [{ "email": "recipient@example.com" }],
+            "subject": "Test email from SAP Service Agent"
+          }
+        ],
+        "from": { "email": "sender@example.com" },
+        "content": [
+          {
+            "type": "text/plain",
+            "value": "This is a test email sent via SAP Service Agent"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "Create Stripe Payment Intent",
+    "requestDetails": {
+      "url": "https://api.stripe.com/v1/payment_intents",
+      "method": "POST",
+      "headers": { 
+        "Authorization": "Bearer sk_test_...",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "body": "amount=2000&currency=usd&payment_method_types[]=card"
+    }
+  },
+  {
+    "name": "HubSpot - Create Contact",
+    "requestDetails": {
+      "url": "https://api.hubapi.com/crm/v3/objects/contacts",
+      "method": "POST",
+      "headers": { 
+        "Authorization": "Bearer YOUR_HUBSPOT_TOKEN",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "properties": {
+          "email": "test@example.com",
+          "firstname": "John",
+          "lastname": "Doe",
+          "company": "Test Company"
+        }
+      }
+    }
+  },
+  {
+    "name": "Discord Webhook",
+    "requestDetails": {
+      "url": "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN",
+      "method": "POST",
+      "headers": { "Content-Type": "application/json" },
+      "body": {
+        "content": "Service call executed successfully!",
+        "embeds": [
+          {
+            "title": "SAP Service Agent Alert",
+            "description": "A scheduled service call has been completed.",
+            "color": 3066993
+          }
+        ]
+      }
+    }
+  }
+]

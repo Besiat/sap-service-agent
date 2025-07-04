@@ -1,0 +1,17 @@
+{
+  "name": "sap-service-agent-data-seeder",
+  "version": "1.0.0",
+  "description": "Data seeder for SAP Service Agent",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "seed": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.0",
+    "dotenv": "^16.4.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
